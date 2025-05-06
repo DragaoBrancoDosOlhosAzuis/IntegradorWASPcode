@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Livro{% endblock %}
+{% block page_title %}Cadastrar Novo Livro{% endblock %}
+
+{% block content %}
+<form method="POST" class="form-livro">
+    <div class="form-group">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="autor">Autor:</label>
+        <input type="text" id="autor" name="autor" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="categoria">Categoria:</label>
+        <select id="categoria" name="categoria">
+            <option value="literatura">Literatura</option>
+            <option value="tecnico">Técnico</option>
+            <option value="cientifico">Científico</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="isbn">ISBN:</label>
+        <input type="text" id="isbn" name="isbn">
+    </div>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn">Salvar</button>
+        <a href="{{ url_for('listar_livros') }}" class="btn btn-cancel">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

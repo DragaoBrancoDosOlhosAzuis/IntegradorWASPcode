@@ -1,0 +1,5 @@
+# requirements.txt
+flask==2.3.2
+tinydb==4.7.0
+werkzeug==2.3.6  # Necessário para sessões e roteamento
+python-dotenv==1.0.0  # Para variáveis de ambiente (opcional)pip install -r requirements.txt

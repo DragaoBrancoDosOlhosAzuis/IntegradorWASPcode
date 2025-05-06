@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Reservas{% endblock %}
+{% block page_title %}Lista de Reservas{% endblock %}
+
+{% block content %}
+<div class="reservas-container">
+    <a href="{{ url_for('main.nova_reserva') }}" class="btn btn-primary">Nova Reserva</a>
+
+    <table class="tabela-reservas">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Livro</th>
+                <th>Usuário</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reserva in reservas %}
+            <tr>
+                <td>{{ reserva.id }}</td>
+                <td>{{ reserva.livro }}</td>
+                <td>{{ reserva.usuario }}</td>
+                <td>
+                    <span class="status status-{{ reserva.status|lower }}">{{ reserva.status }}</span>
+                </td>
+                <td>
+                    <a href="#" class="btn btn-sm">Editar</a>
+                    <a href="#" class="btn btn-sm btn-danger">Cancelar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h2>Bem-vindo, {{ session.user.nome }}!</h2>
+    
+    <div class="dashboard-cards">
+        <div class="card">
+            <h3><a href="{{ url_for('main.listar_livros') }}">Livros</a></h3>
+            <p>Gerencie o acervo</p>
+        </div>
+        
+        <div class="card">
+            <h3><a href="#">Empréstimos</a></h3>
+            <p>Controle de circulação</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes do Livro{% endblock %}
+{% block page_title %}Detalhes do Livro: {{ livro.titulo }}{% endblock %}
+
+{% block content %}
+<div class="livro-detalhes">
+    <div class="detalhe-item">
+        <span class="detalhe-label">Autor:</span>
+        <span class="detalhe-value">{{ livro.autor }}</span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">Status:</span>
+        <span class="detalhe-value">Disponível</span>
+    </div>
+    
+    <div class="detalhe-item">
+        <span class="detalhe-label">Último empréstimo:</span>
+        <span class="detalhe-value">15/04/2023</span>
+    </div>
+    
+    <div class="acoes">
+        <a href="#" class="btn">Editar</a>
+        <a href="#" class="btn btn-danger">Excluir</a>
+        <a href="{{ url_for('listar_livros') }}" class="btn">Voltar</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Livros{% endblock %}
+{% block page_title %}Lista de Livros{% endblock %}
+
+{% block content %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Disponível</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for livro in livros %}
+        <tr>
+            <td>{{ livro.id }}</td>
+            <td>{{ livro.titulo }}</td>
+            <td>{{ livro.autor }}</td>
+            <td>{% if livro.disponivel %}Sim{% else %}Não{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

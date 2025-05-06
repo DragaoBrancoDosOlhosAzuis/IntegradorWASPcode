@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Novo Empréstimo{% endblock %}
+{% block page_title %}Registrar Novo Empréstimo{% endblock %}
+
+{% block content %}
+<form method="POST" class="form-emprestimo">
+    <div class="form-group">
+        <label for="livro">Livro:</label>
+        <select id="livro" name="livro" required>
+            <option value="">Selecione um livro</option>
+            <option value="1">Dom Casmurro - Machado de Assis</option>
+            <option value="2">1984 - George Orwell</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="usuario">Usuário:</label>
+        <select id="usuario" name="usuario" required>
+            <option value="">Selecione um usuário</option>
+            <option value="1">João Silva</option>
+            <option value="2">Maria Souza</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="data_devolucao">Data de Devolução:</label>
+        <input type="date" id="data_devolucao" name="data_devolucao" required>
+    </div>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn">Registrar</button>
+        <a href="{{ url_for('listar_emprestimos') }}" class="btn btn-cancel">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

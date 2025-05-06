@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Sistema Biblioteca{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="login-container">
+  <div class="login-card">
+    <!-- Cabeçalho -->
+    <div class="login-header">
+      <h2>Acesse sua conta</h2>
+      <p>Gerencie o acervo da biblioteca</p>
+    </div>
+    
+    <!-- Logo -->
+    <div class="login-logo">
+      <i class="fas fa-book-open"></i>
+    </div>
+    
+    <!-- Corpo do Formulário -->
+    <div class="login-body">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                <span>{{ message }}</span>
+                <button class="close-btn" onclick="this.parentElement.remove()">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="{{ url_for('main.login') }}" autocomplete="off">
+        <!-- Campo Email -->
+        <div class="form-group">
+          <label for="email">Endereço de Email</label>
+          <input type="email" id="email" name="email" class="form-control" 
+                 placeholder="exemplo@biblioteca.com" required>
+          <i class="fas fa-envelope input-icon"></i>
+        </div>
+        
+        <!-- Campo Senha -->
+        <div class="form-group">
+          <label for="senha">Sua Senha</label>
+          <input type="password" id="senha" name="senha" class="form-control" 
+                 placeholder="••••••••" required minlength="6">
+          <i class="fas fa-lock input-icon"></i>
+        </div>
+        
+        <!-- Botão de Login -->
+        <button type="submit" class="btn-login">
+          <i class="fas fa-sign-in-alt"></i> Entrar no Sistema
+        </button>
+      </form>
+      
+      <!-- Rodapé -->
+      <div class="login-footer">
+        <p>Novo no sistema? <a href="#">Solicite acesso ao administrador</a></p>
+        <p><a href="#"><i class="fas fa-key"></i> Recuperar senha</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Efeito de loading no botão -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const btn = document.querySelector('.btn-login');
+  const form = document.querySelector('form');
+  
+  form.addEventListener('submit', function(e) {
+    if(btn.classList.contains('loading')) return;
+    
+    btn.classList.add('loading');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Autenticando...';
+    
+    // Remove o loading após 3 segundos (apenas para demonstração)
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar no Sistema';
+    }, 3000);
+  });
+});
+</script>
+{% endblock %} 
