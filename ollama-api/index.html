@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - WaspBot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #155229;
+            --secondary-color: #124423;
+            --bot-message: #e3e3e3;
+            --user-message: #155229;
+            --error-message: #ff6b6b;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #chatbotButton {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        #chatbotButton:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        
+        #chatbotWindow {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            max-height: 70vh;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            border: 1px solid #ddd;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        #chatbotWindow.active {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        #chatbotHeader {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #chatbotContent {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .bot-message {
+            background-color: var(--bot-message);
+            border-bottom-left-radius: 5px;
+            align-self: flex-start;
+            white-space: pre-line;
+        }
+        
+        .user-message {
+            background-color: var(--user-message);
+            color: white;
+            border-bottom-right-radius: 5px;
+            align-self: flex-end;
+        }
+
+        .error-message {
+            background-color: var(--error-message);
+            color: white;
+            align-self: center;
+            text-align: center;
+            margin: 5px 0;
+        }
+        
+        #chatbotInputContainer {
+            display: flex;
+            padding: 12px;
+            background-color: white;
+            border-top: 1px solid #ddd;
+        }
+        
+        #chatbotInput {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        #chatbotInput:focus {
+            border-color: var(--primary-color);
+        }
+        
+        #sendButton {
+            margin-left: 10px;
+            padding: 0 15px;
+            min-width: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #sendButton:hover {
+            background-color: var(--secondary-color);
+        }
+
+        #sendButton:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        #errorMessage {
+            color: var(--error-message);
+            font-size: 14px;
+            text-align: center;
+            padding: 5px;
+            display: none;
+        }
+
+        #chatbotMascot {
+            position: fixed;
+            bottom: 30px;
+            right: 380px;
+            width: 170px;
+            height: 300px;
+            z-index: 999;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        #chatbotMascot.active {
+            display: block;
+            animation: bounce 5s infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(0px); }
+            60% { transform: translateY(0px); }
+        }
+
+        @media (max-width: 480px) {
+            #chatbotWindow {
+                width: calc(100% - 20px);
+                right: 10px;
+                bottom: 80px;
+                max-height: 60vh;
+            }
+            
+            #chatbotButton {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            #chatbotMascot {
+                right: 80px;
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="chatbotMascot">
+        <img src="assets/bot.gif" alt="Mascote WaspBot" style="width: 100%; height: 100%; object-fit: contain;">
+    </div>
+
+    <button id="chatbotButton" aria-label="Abrir chatbot">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <div id="chatbotWindow">
+        <div id="chatbotHeader">
+            <span>WaspBot - Biblioteca</span>
+            <i class="fas fa-times" id="closeChat" aria-label="Fechar chatbot"></i>
+        </div>
+        <div id="chatbotContent">
+            <div class="message bot-message">Olá! Sou o WaspBot, assistente virtual da biblioteca. Posso ajudar com:</div>
+            <div class="message bot-message">
+                • Consulta de livros<br>
+                • Disponibilidade<br>
+                • Prazos de empréstimo<br>
+                • Horário de funcionamento
+            </div>
+        </div>
+        <div id="errorMessage"></div>
+        <div id="chatbotInputContainer">
+            <input type="text" id="chatbotInput" placeholder="Digite sua mensagem..." autocomplete="off" aria-label="Mensagem do usuário">
+            <button id="sendButton" class="send-button" aria-label="Enviar mensagem">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="chatbot.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = {
+                button: document.getElementById('chatbotButton'),
+                window: document.getElementById('chatbotWindow'),
+                closeBtn: document.getElementById('closeChat'),
+                input: document.getElementById('chatbotInput'),
+                sendBtn: document.getElementById('sendButton'),
+                content: document.getElementById('chatbotContent'),
+                errorElement: document.getElementById('errorMessage'),
+                mascot: document.getElementById('chatbotMascot')
+            };
+    
+            // Controle de visibilidade
+            const toggleChat = () => {
+                elements.window.classList.toggle('active');
+                elements.mascot.classList.toggle('active');
+                if (elements.window.classList.contains('active')) {
+                    elements.input.focus();
+                }
+            };
+    
+            // Event listeners
+            elements.button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleChat();
+            });
+    
+            elements.closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                elements.window.classList.remove('active');
+                elements.mascot.classList.remove('active');
+            });
+    
+            document.addEventListener('click', (e) => {
+                if (!elements.window.contains(e.target)) {
+                    if (e.target !== elements.button && !elements.mascot.contains(e.target)) {
+                        elements.window.classList.remove('active');
+                        elements.mascot.classList.remove('active');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
